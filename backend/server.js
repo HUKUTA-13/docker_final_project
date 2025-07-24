@@ -8,7 +8,7 @@ app.use(cors());
 
 const pool = new Pool({
   user: 'postgres',
-  host: 'postgres',
+  host: 'localhost',
   database: 'crm_db',
   password: 'password',
   port: 5432,
