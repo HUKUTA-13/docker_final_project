@@ -2,12 +2,12 @@
 
 # Скрипт для первоначальной настройки PostgreSQL
 
-echo "🔧 Настройка PostgreSQL для CRM..."
+echo "Настройка PostgreSQL для CRM..."
 echo ""
 
 # Проверка установки PostgreSQL
 if ! command -v psql &> /dev/null; then
-    echo "❌ PostgreSQL не установлен!"
+    echo "PostgreSQL не установлен!"
     echo ""
     echo "Для установки выполните:"
     echo "Ubuntu/Debian: sudo apt-get install postgresql postgresql-contrib"
@@ -17,7 +17,7 @@ if ! command -v psql &> /dev/null; then
 fi
 
 # Запуск PostgreSQL если не запущен
-echo "📊 Проверка статуса PostgreSQL..."
+echo "Проверка статуса PostgreSQL..."
 if ! pg_isready -q 2>/dev/null; then
     echo "PostgreSQL не запущен. Попытка запуска..."
     
@@ -31,11 +31,11 @@ if ! pg_isready -q 2>/dev/null; then
     sleep 2
     
     if ! pg_isready -q 2>/dev/null; then
-        echo "❌ Не удалось запустить PostgreSQL"
+        echo "Не удалось запустить PostgreSQL"
         exit 1
     fi
 fi
 
-echo "✅ PostgreSQL запущен"
+echo "PostgreSQL запущен"
 echo ""
 echo "Теперь запустите ./start.sh для запуска приложения"

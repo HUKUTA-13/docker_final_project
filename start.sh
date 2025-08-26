@@ -2,7 +2,7 @@
 
 # Скрипт для запуска CRM-приложения локально
 
-echo "🚀 Запуск CRM приложения..."
+echo "Запуск приложения..."
 echo ""
 
 # Цвета для вывода
@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 
 # Проверка установки PostgreSQL
 if ! command -v psql &> /dev/null; then
-    echo -e "${RED}❌ PostgreSQL не установлен!${NC}"
+    echo -e "${RED}PostgreSQL не установлен${NC}"
     echo "   Установите PostgreSQL командой:"
     echo "   sudo apt-get install postgresql postgresql-contrib"
     echo ""
@@ -25,7 +25,7 @@ fi
 
 # Проверка установки Node.js
 if ! command -v node &> /dev/null; then
-    echo -e "${RED}❌ Node.js не установлен!${NC}"
+    echo -e "${RED}Node.js не установлен${NC}"
     echo "   Установите Node.js с https://nodejs.org/"
     exit 1
 fi
@@ -34,7 +34,7 @@ fi
 REQUIRED_NODE_VERSION="18"
 CURRENT_NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
 
-echo -e "${GREEN}📦 Проверка версии Node.js...${NC}"
+echo -e "${GREEN}Проверка версии Node.js...${NC}"
 echo "   Текущая версия: v$(node -v | cut -d'v' -f2)"
 
 # Проверка и переключение версии Node.js через nvm если доступно
@@ -45,7 +45,7 @@ if command -v nvm &> /dev/null || [ -s "$NVM_DIR/nvm.sh" ]; then
     fi
     
     if [ "$CURRENT_NODE_VERSION" != "$REQUIRED_NODE_VERSION" ]; then
-        echo -e "${YELLOW}⚠️  Переключение на Node.js v${REQUIRED_NODE_VERSION}...${NC}"
+        echo -e "${YELLOW}Переключение на Node.js v${REQUIRED_NODE_VERSION}...${NC}"
         nvm use $REQUIRED_NODE_VERSION 2>/dev/null || nvm install $REQUIRED_NODE_VERSION
         
         # Проверяем успешность переключения
@@ -53,34 +53,34 @@ if command -v nvm &> /dev/null || [ -s "$NVM_DIR/nvm.sh" ]; then
         if [ "$NEW_NODE_VERSION" = "$REQUIRED_NODE_VERSION" ]; then
             echo -e "${GREEN}✅ Переключено на Node.js v${REQUIRED_NODE_VERSION}${NC}"
         else
-            echo -e "${YELLOW}⚠️  Не удалось переключить версию Node.js, продолжаем с текущей${NC}"
+            echo -e "${YELLOW}Не удалось переключить версию Node.js, продолжаем с текущей${NC}"
         fi
     else
         echo -e "${GREEN}✅ Используется рекомендуемая версия Node.js${NC}"
     fi
 elif [ "$CURRENT_NODE_VERSION" -lt "$REQUIRED_NODE_VERSION" ]; then
-    echo -e "${YELLOW}⚠️  Рекомендуется Node.js v${REQUIRED_NODE_VERSION} или выше${NC}"
+    echo -e "${YELLOW}Рекомендуется Node.js v${REQUIRED_NODE_VERSION} или выше${NC}"
     echo "   Установите nvm для управления версиями Node.js:"
     echo "   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
 fi
 
 # Очистка старых зависимостей если они установлены от root
 if [ -d "backend/node_modules" ] && [ "$(stat -c %U backend/node_modules 2>/dev/null || stat -f %Su backend/node_modules 2>/dev/null)" = "root" ]; then
-    echo -e "${YELLOW}🧹 Очистка старых зависимостей backend...${NC}"
+    echo -e "${YELLOW}Очистка старых зависимостей backend...${NC}"
     rm -rf backend/node_modules backend/package-lock.json
 fi
 
 if [ -d "frontend/node_modules" ] && [ "$(stat -c %U frontend/node_modules 2>/dev/null || stat -f %Su frontend/node_modules 2>/dev/null)" = "root" ]; then
-    echo -e "${YELLOW}🧹 Очистка старых зависимостей frontend...${NC}"
+    echo -e "${YELLOW}Очистка старых зависимостей frontend...${NC}"
     rm -rf frontend/node_modules frontend/package-lock.json
 fi
 
 # Создание базы данных и таблиц
-echo -e "${GREEN}📊 Настройка базы данных...${NC}"
+echo -e "${GREEN}Настройка базы данных...${NC}"
 
 # Проверяем, запущен ли PostgreSQL
 if ! pg_isready -q 2>/dev/null; then
-    echo -e "${YELLOW}⚠️  PostgreSQL не запущен. Пытаемся запустить...${NC}"
+    echo -e "${YELLOW}PostgreSQL не запущен. Пытаемся запустить...${NC}"
     
     # Для systemd систем
     if command -v systemctl &> /dev/null; then
@@ -102,7 +102,7 @@ if ! pg_isready -q 2>/dev/null; then
     fi
     
     echo ""
-    echo -e "${RED}❌ Не удалось подключиться к PostgreSQL${NC}"
+    echo -e "${RED}Не удалось подключиться к PostgreSQL${NC}"
     echo "   Убедитесь, что PostgreSQL запущен и доступен"
     exit 1
 fi
@@ -164,7 +164,7 @@ echo -e "${GREEN}✅ База данных настроена${NC}"
 
 # Установка зависимостей backend
 echo ""
-echo -e "${GREEN}📦 Установка зависимостей backend...${NC}"
+echo -e "${GREEN}Установка зависимостей backend...${NC}"
 cd backend
 npm install
 if [ $? -ne 0 ]; then
@@ -173,7 +173,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Запуск backend в фоне
-echo -e "${GREEN}🔧 Запуск backend сервера...${NC}"
+echo -e "${GREEN}Запуск backend...${NC}"
 npm start &
 BACKEND_PID=$!
 cd ..
@@ -184,16 +184,16 @@ sleep 3
 
 # Проверяем, что backend запустился
 if ! curl -s http://localhost:3001/api/clients > /dev/null; then
-    echo -e "${YELLOW}⚠️  Backend может быть не готов, продолжаем...${NC}"
+    echo -e "${YELLOW}Backend может быть не готов, продолжаем...${NC}"
 fi
 
 # Установка зависимостей frontend
 echo ""
-echo -e "${GREEN}📦 Установка зависимостей frontend...${NC}"
+echo -e "${GREEN}Установка зависимостей frontend...${NC}"
 cd frontend
 npm install
 if [ $? -ne 0 ]; then
-    echo -e "${RED}❌ Ошибка установки зависимостей frontend${NC}"
+    echo -e "${RED}Ошибка установки зависимостей frontend${NC}"
     kill $BACKEND_PID 2>/dev/null
     exit 1
 fi
@@ -201,7 +201,7 @@ fi
 # Функция для корректного завершения процессов
 cleanup() {
     echo ""
-    echo -e "${YELLOW}🛑 Остановка приложения...${NC}"
+    echo -e "${YELLOW}Остановка приложения...${NC}"
     kill $BACKEND_PID 2>/dev/null
     exit 0
 }
@@ -210,7 +210,7 @@ cleanup() {
 trap cleanup INT TERM
 
 # Запуск frontend
-echo -e "${GREEN}🎨 Запуск frontend приложения...${NC}"
+echo -e "${GREEN}апуск frontend...${NC}"
 echo ""
 echo -e "${GREEN}✅ Приложение запущено!${NC}"
 echo "   Frontend: http://localhost:3000"

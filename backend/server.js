@@ -7,11 +7,11 @@ app.use(express.json());
 app.use(cors());
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'crm_db',
-  password: 'password',
-  port: 5432,
+  user: process.env.DB_USER || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'crm_db',
+  password: process.env.DB_PASSWORD || 'password',
+  port: process.env.DB_PORT || 5432,
 });
 
 app.get('/api/clients', async (req, res) => {

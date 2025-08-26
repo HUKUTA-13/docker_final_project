@@ -2,7 +2,7 @@
 
 # Скрипт для установки PostgreSQL
 
-echo "🔧 Установка PostgreSQL..."
+echo "Установка PostgreSQL..."
 echo ""
 
 # Определение дистрибутива
@@ -14,7 +14,7 @@ fi
 
 # Установка для Ubuntu/Debian
 if [[ "$OS" == "ubuntu" ]] || [[ "$OS" == "debian" ]]; then
-    echo "📦 Обнаружен $OS. Установка PostgreSQL..."
+    echo "Обнаружен $OS. Установка PostgreSQL..."
     
     # Обновление репозиториев
     sudo apt-get update
@@ -26,11 +26,11 @@ if [[ "$OS" == "ubuntu" ]] || [[ "$OS" == "debian" ]]; then
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
     
-    echo "✅ PostgreSQL установлен!"
+    echo "PostgreSQL установлен"
     
 # Установка для Fedora/RedHat/CentOS
 elif [[ "$OS" == "fedora" ]] || [[ "$OS" == "rhel" ]] || [[ "$OS" == "centos" ]]; then
-    echo "📦 Обнаружен $OS. Установка PostgreSQL..."
+    echo "Обнаружен $OS. Установка PostgreSQL..."
     
     # Установка PostgreSQL
     sudo dnf install -y postgresql postgresql-server postgresql-contrib
@@ -42,10 +42,10 @@ elif [[ "$OS" == "fedora" ]] || [[ "$OS" == "rhel" ]] || [[ "$OS" == "centos" ]]
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
     
-    echo "✅ PostgreSQL установлен!"
+    echo "PostgreSQL установлен"
     
 else
-    echo "⚠️  Не удалось определить дистрибутив Linux"
+    echo "   Не удалось определить дистрибутив Linux"
     echo "   Установите PostgreSQL вручную:"
     echo "   Ubuntu/Debian: sudo apt-get install postgresql postgresql-contrib"
     echo "   Fedora: sudo dnf install postgresql postgresql-server"
@@ -55,7 +55,7 @@ fi
 
 # Настройка пользователя postgres
 echo ""
-echo "🔐 Настройка пользователя postgres..."
+echo "Настройка пользователя postgres..."
 
 # Установка пароля для пользователя postgres
 sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'password';"
@@ -90,6 +90,6 @@ if [ -d "$PG_CONFIG_DIR" ]; then
 fi
 
 echo ""
-echo "✅ PostgreSQL установлен и настроен!"
+echo "PostgreSQL установлен и настроен"
 echo ""
 echo "Теперь запустите ./start.sh для запуска приложения"
